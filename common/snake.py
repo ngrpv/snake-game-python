@@ -1,3 +1,4 @@
+from common.enums import Direction
 from prompt_toolkit.data_structures import Point
 
 
@@ -38,6 +39,15 @@ class Snake:
         for i in range(len(self.points)):
             (self.points[i], target_point) = (target_point, self.points[i])
 
+    def move(self, direction: Direction) -> None:
+        # todo: implement this instead of what u 've done
+        # todo2: edit Direction and the rest code and make
+        #  it use your vectors implementation
+        pass
+
+    def grow(self):
+        # todo: implement
+        pass
 
     def get_points(self):
         return self.points
