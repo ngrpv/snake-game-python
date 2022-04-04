@@ -1,6 +1,5 @@
 import pytest
-from prompt_toolkit.data_structures import Point
-
+from common.Point import Point
 from enums import Direction
 from common.snake import Snake
 
@@ -67,12 +66,10 @@ class TestSnake:
         snake = Snake(Point(4, 0), Point(0, 0))
         snake.move(Direction.Down)
         snake.move(Direction.Left)
-        snake.move(Direction.Up)
-        assert snake.is_dead
+        assert snake.can_collide_with_itself(Direction.Up)
 
     def test_snake_is_not_dead_if_move_to_cell_with_tail(self):
         snake = Snake(Point(3, 0), Point(0, 0))
         snake.move(Direction.Down)
         snake.move(Direction.Left)
-        snake.move(Direction.Up)
-        assert not snake.is_dead
+        assert not snake.can_collide_with_itself(Direction.Up)
