@@ -27,6 +27,8 @@ class Snake:
         '''Move the snake one block in the given direction'''
         target_point = Point(self.head.x + direction.value.x,
                              self.head.y + direction.value.y)
+        if target_point == self.points[1]:
+            raise AttributeError("Snake can't move on opposite direction")
         self.previous_tail_position = self.points[-1]
         for i in range(len(self.points)):
             self.points[i], target_point = target_point, self.points[i]

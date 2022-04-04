@@ -73,3 +73,9 @@ class TestSnake:
         snake.move(Direction.Down)
         snake.move(Direction.Left)
         assert not snake.can_collide_with_itself(Direction.Up)
+
+    def test_move_on_opposite_direction_should_raise(self):
+        snake = Snake(Point(3, 0), Point(0, 0))
+        snake.move(Direction.Right)
+        with pytest.raises(AttributeError):
+            snake.move(Direction.Left)
