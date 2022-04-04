@@ -8,7 +8,6 @@ class Snake:
         self.head = head
         self.points = []
         self.previous_tail_position = tail
-        self.is_dead = False
         if head.x == tail.x:
             for i in range(min(head.y, tail.y), max(head.y, tail.y)):
                 self.points.append(Point(head.x, i))
@@ -28,9 +27,6 @@ class Snake:
         '''Move the snake one block in the given direction'''
         target_point = Point(self.head.x + direction.value.x,
                              self.head.y + direction.value.y)
-        if self._can_die_on_moving(target_point):
-            self.is_dead = True
-            return
         self.previous_tail_position = self.points[-1]
         for i in range(len(self.points)):
             self.points[i], target_point = target_point, self.points[i]
@@ -43,7 +39,9 @@ class Snake:
     def get_points(self):
         return self.points
 
-    def _can_die_on_moving(self, target: Point) -> bool:
+    def can_collide_with_itself(self, direction: Direction) -> bool:
+        target = Point(self.head.x + direction.value.x,
+                       self.head.y + direction.value.y)
         if target in self.points[:-1]:
             return True
         return False

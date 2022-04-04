@@ -12,6 +12,7 @@ class Game:
         self._map = game_map
         self._is_game_over = False
         self._next_food()
+        self._last_direction = None
 
     def _next_food(self) -> None:
         is_point_generated = False
@@ -26,6 +27,10 @@ class Game:
     @property
     def map_dimensions(self) -> Point:
         return Point(self._map.width, self._map.height)
+
+    @property
+    def is_game_over(self) -> bool:
+        return self._is_game_over
 
     def get(self, x: int, y: int) -> MapCellType:
         """Get current map representation for view"""
@@ -42,10 +47,13 @@ class Game:
         "Move snake in specified direction"
         if self._is_game_over:
             return
+
+        if self._snake.can_collide_with_itself(direction):
+            self._is_game_over = True
+
         self._snake.move(direction)
         head = self._snake.head
         if head == self._food_point:
             self._snake.grow()
-        if (self._map.get(head.x, head.y) == MapCellType.Obstacle
-                or head in self._snake.get_points[1:]):
+        if self._map.get(head.x, head.y) == MapCellType.Obstacle:
             self._is_game_over = True
