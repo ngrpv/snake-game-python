@@ -2,8 +2,9 @@ from random import randint
 
 from common.enums import Direction, MapCellType
 from common.game_map import GameMap
-from common.snake import Snake
 from common.Point import Point
+from common.snake import Snake
+
 
 class Game:
     def __init__(self, snake: Snake, game_map: GameMap):
@@ -47,9 +48,14 @@ class Game:
         if self._is_game_over:
             return
 
-        head = self._snake.head
+        head_after_move = Point(
+            self._snake.head.x + direction.value.x,
+            self._snake.head.y + direction.value.y)
+
         if (self._snake.can_collide_with_itself(direction)
-                or self._map.get(head.x, head.y) == MapCellType.Obstacle):
+                or self._map.get(
+                    head_after_move.x,
+                    head_after_move.y) == MapCellType.Obstacle):
             self._is_game_over = True
             return
 
