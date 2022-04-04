@@ -47,12 +47,13 @@ class Game:
         if self._is_game_over:
             return
 
-        if self._snake.can_collide_with_itself(direction):
+        head = self._snake.head
+        if (self._snake.can_collide_with_itself(direction)
+                or self._map.get(head.x, head.y) == MapCellType.Obstacle):
             self._is_game_over = True
+            return
 
         self._snake.move(direction)
         head = self._snake.head
         if head == self._food_point:
             self._snake.grow()
-        if self._map.get(head.x, head.y) == MapCellType.Obstacle:
-            self._is_game_over = True
