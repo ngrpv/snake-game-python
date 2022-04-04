@@ -7,6 +7,8 @@ class Snake:
         self.tail = tail
         self.head = head
         self.points = []
+        self.previous_tail_position = tail
+        self.is_dead = False
         if head.x == tail.x:
             for i in range(min(head.y, tail.y), max(head.y, tail.y)):
                 self.points.append(Point(head.x, i))
@@ -22,32 +24,26 @@ class Snake:
         if self.points[0] != head:
             self.points.reverse()
 
-    def move_down(self):
-        self._move(0, 1)
-
-    def move_up(self):
-        self._move(0, -1)
-
-    def move_left(self):
-        self._move(-1, 0)
-
-    def move_right(self):
-        self._move(1, 0)
-
-    def _move(self, dx, dy):
-        target_point = Point(self.head.x + dx, self.head.y + dy)
-        for i in range(len(self.points)):
-            (self.points[i], target_point) = (target_point, self.points[i])
-
     def move(self, direction: Direction) -> None:
-        # todo: implement this instead of what u 've done
-        # todo2: edit Direction and the rest code and make
-        #  it use your vectors implementation
-        pass
+        '''Move the snake one block in the given direction'''
+        target_point = Point(self.head.x + direction.value.x,
+                             self.head.y + direction.value.y)
+        if self._can_die_on_moving(target_point):
+            self.is_dead = True
+            return
+        self.previous_tail_position = self.points[-1]
+        for i in range(len(self.points)):
+            self.points[i], target_point = target_point, self.points[i]
+        self.head = self.points[0]
+        self.tail = self.points[-1]
 
     def grow(self):
-        # todo: implement
-        pass
+        self.points.append(self.previous_tail_position)
 
     def get_points(self):
         return self.points
+
+    def _can_die_on_moving(self, target: Point) -> bool:
+        if target in self.points[:-1]:
+            return True
+        return False
