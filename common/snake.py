@@ -1,5 +1,5 @@
 from common.enums import Direction
-from prompt_toolkit.data_structures import Point
+from common.Point import Point
 
 
 class Snake:

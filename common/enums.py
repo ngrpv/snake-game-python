@@ -1,7 +1,5 @@
 from enum import Enum
-
-from prompt_toolkit.data_structures import Point
-
+from Point import Point
 
 class Direction(Enum):
     Up = Point(0, -1)

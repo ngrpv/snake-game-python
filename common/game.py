@@ -3,8 +3,7 @@ from random import randint
 from common.enums import Direction, MapCellType
 from common.game_map import GameMap
 from common.snake import Snake
-from prompt_toolkit.data_structures import Point
-
+from common.Point import Point
 
 class Game:
     def __init__(self, snake: Snake, game_map: GameMap):
