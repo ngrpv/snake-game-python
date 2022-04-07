@@ -1,5 +1,7 @@
 from enum import Enum
-from Point import Point
+
+from common.Point import Point
+
 
 class Direction(Enum):
     Up = Point(0, -1)

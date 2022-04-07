@@ -13,6 +13,11 @@ class Game:
         self._is_game_over = False
         self._next_food()
         self._last_direction = None
+        self._score = 0
+        self._previous_direction = None
+        self._snake.set_coordinate_limits(
+            self._map.width,
+            self._map.height)
 
     def _next_food(self) -> None:
         is_point_generated = False
@@ -27,6 +32,10 @@ class Game:
     @property
     def map_dimensions(self) -> Point:
         return Point(self._map.width, self._map.height)
+
+    @property
+    def score(self):
+        return self._score
 
     @property
     def is_game_over(self) -> bool:
@@ -45,21 +54,29 @@ class Game:
 
     def move(self, direction: Direction) -> None:
         "Move snake in specified direction"
+        if (self._previous_direction
+                and self._previous_direction
+                == Point(-direction.x, -direction.y)):
+            raise AttributeError("Snake can't move on opposite direction")
         if self._is_game_over:
             return
 
-        head_after_move = Point(
-            self._snake.head.x + direction.value.x,
-            self._snake.head.y + direction.value.y)
+        head = self._snake.head
+        dirv = direction.value
+        mapw = self._map.width
+        maph = self._map.height
+
+        head = Point(
+            (mapw + head.x + dirv.x) % mapw,
+            (maph + head.y + dirv.y) % maph)
 
         if (self._snake.can_collide_with_itself(direction)
-                or self._map.get(
-                    head_after_move.x,
-                    head_after_move.y) == MapCellType.Obstacle):
+                or self._map.get(head.x, head.y) == MapCellType.Obstacle):
             self._is_game_over = True
             return
 
         self._snake.move(direction)
-        head = self._snake.head
         if head == self._food_point:
             self._snake.grow()
+            self._score += 1
+            self._next_food()

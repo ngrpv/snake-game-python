@@ -8,6 +8,7 @@ class Snake:
         self.head = head
         self.points = []
         self.previous_tail_position = tail
+        self._coordinate_limits = None
         if head.x == tail.x:
             for i in range(min(head.y, tail.y), max(head.y, tail.y)):
                 self.points.append(Point(head.x, i))
@@ -25,8 +26,15 @@ class Snake:
 
     def move(self, direction: Direction) -> None:
         '''Move the snake one block in the given direction'''
-        target_point = Point(self.head.x + direction.value.x,
-                             self.head.y + direction.value.y)
+        target_point = Point(
+            self.head.x + direction.value.x,
+            self.head.y + direction.value.y)
+        if self._coordinate_limits:
+            limits = self._coordinate_limits
+            target_point = Point(
+                (limits.x + target_point.x) % limits.x,
+                (limits.y + target_point.y) % limits.y)
+
         if target_point == self.points[1]:
             raise AttributeError("Snake can't move on opposite direction")
         self.previous_tail_position = self.points[-1]
@@ -37,6 +45,9 @@ class Snake:
 
     def grow(self):
         self.points.append(self.previous_tail_position)
+
+    def set_coordinate_limits(self, x, y):
+        self._coordinate_limits = Point(x, y)
 
     def get_points(self):
         return self.points
