@@ -11,6 +11,7 @@ class Game:
         self._snake = snake
         self._map = game_map
         self._is_game_over = False
+        self._food_point = None
         self._next_food()
         self._last_direction = None
         self._score = 0
@@ -24,7 +25,7 @@ class Game:
         while not is_point_generated:
             x = randint(0, self._map.width - 1)
             y = randint(0, self._map.height - 1)
-            if self._map.get(x, y) == MapCellType.Empty:
+            if self.get(x, y) == MapCellType.Empty:
                 is_point_generated = True
 
         self._food_point = Point(x, y)
@@ -47,8 +48,11 @@ class Game:
         point = Point(x, y)
         if point == self._food_point:
             return MapCellType.Food
-        if point in self._snake.get_points():
-            return MapCellType.Snake
+        for candidate in self._snake.get_points():
+            candidate_x = (candidate.x + self._map.width) % self._map.width
+            candidate_y = (candidate.y + self._map.height) % self._map.height
+            if Point(candidate_x, candidate_y) == point:
+                return MapCellType.Snake
 
         return self._map.get(x, y)
 
