@@ -8,12 +8,12 @@ from common.Point import Point
 
 
 class UICurses:
-    ONE_TICK_SEC = 0.1
+    ONE_TICK_SEC = 0.05
     AUTOMOVE_TICKS = 4
     FIELD_PIXELS = {
-        MapCellType.Empty: "_",
-        MapCellType.Snake: "*",
-        MapCellType.Food: "%",
+        MapCellType.Empty: " ",
+        MapCellType.Snake: "o",
+        MapCellType.Food: "+",
         MapCellType.Obstacle: "#"
     }
 
