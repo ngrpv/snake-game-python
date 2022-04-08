@@ -30,10 +30,14 @@ class UICurses:
             direction = start_direction
             update_count = 0
             while game_is_running and not self._model.is_game_over:
-                key_code = self._stdscr.getch()
+                inp = self._stdscr.getch()
+                key_code = inp
+                while inp != curses.ERR:
+                    key_code = inp
+                    inp = self._stdscr.getch()
+                curses.flushinp()
                 if key_code == ord("q"):
                     game_is_running = False
-
                 previous_direction = direction
                 if key_code == curses.KEY_DOWN:
                     direction = Direction.Down
