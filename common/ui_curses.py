@@ -8,8 +8,8 @@ from common.Point import Point
 
 
 class UICurses:
-    ONE_TICK_SEC = 0.05
-    AUTOMOVE_TICKS = 4
+    ONE_TICK_SEC = 0.1
+    AUTOMOVE_TICKS = 5
     FIELD_PIXELS = {
         MapCellType.Empty: " ",
         MapCellType.Snake: "o",
@@ -60,11 +60,11 @@ class UICurses:
 
                 if update_count == 0:
                     self._model.move(direction)
+                    self._draw_frame()
 
                 update_count += 1
                 update_count %= self.AUTOMOVE_TICKS
 
-                self._draw_frame()
                 sleep(self.ONE_TICK_SEC)
             self._stdscr.addstr(
                 self._model.map_dimensions.y // 2,
