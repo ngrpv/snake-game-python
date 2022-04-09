@@ -17,6 +17,17 @@ class UICurses:
         MapCellType.Obstacle: "#"
     }
 
+    @staticmethod
+    def get_screen_size_wh() -> (int, int):
+        result = None
+        try:
+            stdscr = stdscr = curses.initscr()
+            result = stdscr.getmaxyx()
+        finally:
+            curses.endwin()
+
+        return result[1], result[0]
+
     def __init__(self, game: Game, start_direction: Direction):
         self._model = game
         self._stdscr = curses.initscr()
@@ -68,7 +79,7 @@ class UICurses:
                 sleep(self.ONE_TICK_SEC)
             self._stdscr.addstr(
                 self._model.map_dimensions.y // 2,
-                self._model.map_dimensions.x // 2,
+                (self._model.map_dimensions.x - 9) // 2,
                 "Game over")
             self._stdscr.refresh()
             sleep(2)
@@ -95,7 +106,7 @@ class UICurses:
                     screen.addstr(j, i, self.FIELD_PIXELS[cell_type])
                 self._map_buffer[coordinates] = cell_type
 
-        screen.addstr(map_dimensions.y + 2, 4,
+        screen.addstr(map_dimensions.y, 2,
                       f"Score: {self._model.score}")
 
         screen.refresh()
