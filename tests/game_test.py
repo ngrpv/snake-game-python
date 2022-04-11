@@ -8,7 +8,6 @@ from common.Point import Point
 from common.map_empty import MapEmpty
 from common.enums import Direction, MapCellType
 
-
 class TestGame(unittest.TestCase):
     def setUp(self):
         self.snake = Snake(Point(6, 0), Point(0, 0))
