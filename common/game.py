@@ -59,8 +59,8 @@ class Game:
     def move(self, direction: Direction) -> None:
         "Move snake in specified direction"
         if (self._previous_direction
-                and self._previous_direction
-                == Point(-direction.x, -direction.y)):
+                and self._previous_direction.value
+                == Point(-direction.value.x, -direction.value.y)):
             raise AttributeError("Snake can't move on opposite direction")
         if self._is_game_over:
             return
