@@ -11,7 +11,7 @@ class UICurses:
     ONE_TICK_SEC = 0.1
     AUTOMOVE_TICKS = 5
     FIELD_PIXELS = {
-        MapCellType.Empty: " ",
+        MapCellType.Empty: ".",
         MapCellType.Snake: "o",
         MapCellType.Food: "+",
         MapCellType.Obstacle: "#"
@@ -40,13 +40,12 @@ class UICurses:
             previous_direction = None
             direction = start_direction
             update_count = 0
-            while game_is_running and not self._model.is_game_over:
+            while game_is_running and not self._model.is_over:
                 inp = self._stdscr.getch()
                 key_code = inp
                 while inp != curses.ERR:
                     key_code = inp
                     inp = self._stdscr.getch()
-                curses.flushinp()
                 if key_code == ord("q"):
                     game_is_running = False
                 previous_direction = direction

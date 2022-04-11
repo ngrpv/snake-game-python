@@ -4,6 +4,8 @@ from common.Point import Point
 
 class Snake:
     def __init__(self, head: Point, tail: Point):
+        if head.x < 0 or head.y < 0 or tail.x < 0 or tail.y < 0:
+            raise AttributeError('Initial coordinates must be non-negative')
         self.tail = tail
         self.head = head
         self.points = []
@@ -35,7 +37,7 @@ class Snake:
                 (limits.x + target_point.x) % limits.x,
                 (limits.y + target_point.y) % limits.y)
 
-        if target_point == self.points[1]:
+        if len(self.points) > 1 and target_point == self.points[1]:
             raise AttributeError("Snake can't move on opposite direction")
         self.previous_tail_position = self.points[-1]
         for i in range(len(self.points)):
@@ -47,6 +49,8 @@ class Snake:
         self.points.append(self.previous_tail_position)
 
     def set_coordinate_limits(self, x, y):
+        if x < 1 or y < 1:
+            raise AttributeError('limits should be more than zero')
         self._coordinate_limits = Point(x, y)
 
     def get_points(self):

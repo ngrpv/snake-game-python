@@ -79,3 +79,13 @@ class TestSnake:
         snake.move(Direction.Right)
         with pytest.raises(AttributeError):
             snake.move(Direction.Left)
+
+    def test_raises_if_start_coordinate_is_negative(self):
+        with pytest.raises(AttributeError):
+            Snake(Point(0, -1), Point(1, 1))
+
+    def test_game_snake_coordinate_is_not_out_of_bounds_if_set_limits(self):
+        snake = Snake(Point(4,0), Point(2,0))
+        snake.set_coordinate_limits(5,1)
+        snake.move(Direction.Right)
+        assert snake.head == Point(0,0)
