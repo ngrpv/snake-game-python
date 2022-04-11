@@ -65,6 +65,8 @@ class Game:
         if self._is_game_over:
             return
 
+        self._previous_direction = direction
+
         head = self._snake.head
         dirv = direction.value
         mapw = self._map.width
