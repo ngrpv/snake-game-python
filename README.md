@@ -3,3 +3,8 @@ Console Curses Snake by Мельников Сергей, Гарипов Наза
 
 Controls: keyboard arrows - movement, q - quit
 
+Tests coverage: 
+ * game.py - 96%
+ * snake.py - 97%
+
+
