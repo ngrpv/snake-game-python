@@ -12,6 +12,7 @@ class Snake:
         self.points = []
         self.previous_tail_position = tail
         self._coordinate_limits = None
+
         if head.x == tail.x:
             for i in range(min(head.y, tail.y), max(head.y, tail.y)):
                 self.points.append(Point(head.x, i))
