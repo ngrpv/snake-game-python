@@ -62,10 +62,7 @@ class UICurses:
                     direction = Direction.Right
                     update_count = 0
 
-                dir_vector = direction.value
-                prev_dir_vector = previous_direction.value
-
-                if (Point(-dir_vector.x, -dir_vector.y) == prev_dir_vector):
+                if not self._model.is_direction_valid(direction):
                     direction = previous_direction
 
                 if update_count == 0:
