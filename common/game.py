@@ -66,7 +66,7 @@ class Game:
     def move(self, direction: Direction) -> None:
         """Move snake in specified direction"""
 
-        if self.is_direction_valid(direction):
+        if not self.is_direction_valid(direction):
             raise AttributeError("Snake can't move on opposite direction")
         if self._is_game_over:
             return
