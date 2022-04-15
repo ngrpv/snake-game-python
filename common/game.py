@@ -56,11 +56,17 @@ class Game:
 
         return self._map.get(x, y)
 
+    def is_direction_valid(self, direction: Direction) -> bool:
+        """Check, if submitted direction is valid to move"""
+
+        negative_direction = Point(-direction.value.x, -direction.value.y)
+        return not self._previous_direction \
+            or self._previous_direction.value != negative_direction
+
     def move(self, direction: Direction) -> None:
-        "Move snake in specified direction"
-        if (self._previous_direction
-                and self._previous_direction.value
-                == Point(-direction.value.x, -direction.value.y)):
+        """Move snake in specified direction"""
+
+        if self.is_direction_valid(direction):
             raise AttributeError("Snake can't move on opposite direction")
         if self._is_game_over:
             return
@@ -74,7 +80,8 @@ class Game:
 
         head = Point(
             (mapw + head.x + dirv.x) % mapw,
-            (maph + head.y + dirv.y) % maph)
+            (maph + head.y + dirv.y) % maph
+        )
 
         if (self._snake.can_collide_with_itself(direction)
                 or self._map.get(head.x, head.y) == MapCellType.Obstacle):
