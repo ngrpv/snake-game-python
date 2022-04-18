@@ -2,6 +2,7 @@ from numbers import Real
 
 
 class Point:
+    """2D point class with basic vector operations"""
     def __init__(self, x, y):
         self._x = x
         self._y = y

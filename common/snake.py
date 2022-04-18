@@ -3,12 +3,14 @@ from common.point import Point
 
 
 class Snake:
+    """Snake entity for classic snake game"""
     def __init__(self, head: Point, tail: Point):
         self.tail = tail
         self.head = head
         self.points = []
         self.previous_tail_position = tail
         self._coordinate_limits = None
+
         if head.x == tail.x:
             for i in range(min(head.y, tail.y), max(head.y, tail.y)):
                 self.points.append(Point(head.x, i))
@@ -40,15 +42,18 @@ class Snake:
         self.tail = self.points[-1]
 
     def grow(self):
+        """Grows snake to one block in tail"""
         self.points.append(self.previous_tail_position)
 
     def set_coordinate_limits(self, x, y):
+        """Coordinates limit for snake. If snake out of bounds it'll appear from other side of map"""
         self._coordinate_limits = Point(x, y)
 
     def get_points(self):
         return self.points
 
     def can_collide_with_itself(self, direction: Direction) -> bool:
+        """Checks if snake can collide with self on moving given direction"""
         target = self.head + direction.value
         if target in self.points[:-1]:
             return True

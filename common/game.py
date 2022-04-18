@@ -75,14 +75,13 @@ class Game:
         self._previous_direction = direction
 
         head = self._snake.head % self._map_size
-
         if self._snake.can_collide_with_itself(direction) \
                 or self._map.get(head.x, head.y) == MapCellType.Obstacle:
             self._is_game_over = True
             return
 
         self._snake.move(direction)
-        if head == self._food_point:
+        if self._snake.head == self._food_point:
             self._snake.grow()
             self._score += 1
             self._next_food()
