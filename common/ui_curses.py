@@ -76,6 +76,9 @@ class UICurses:
                 "Game over")
             self._stdscr.refresh()
             sleep(2)
+        except curses.error:
+            self.__del__()
+            print("Critical error occurred: unable to refresh screen due to terminal size change")
         except Exception:
             self.__del__()
             traceback.print_exc()
