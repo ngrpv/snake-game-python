@@ -38,16 +38,21 @@ class Window(QMainWindow):
         self.height = self.dimensions.y
 
     def keyPressEvent(self, event):
-        key = event.key()
-        if key == Qt.Key_Up:
-            self.model.move(Direction.Up)
-        elif key == Qt.Key_Left:
-            self.model.move(Direction.Left)
-        elif key == Qt.Key_Down:
-            self.model.move(Direction.Down)
-        elif key == Qt.Key_Right:
-            self.model.move(Direction.Right)
-        self.update()
+        try:
+            key = event.key()
+            if key == Qt.Key_Up:
+                self.model.move(Direction.Up)
+            elif key == Qt.Key_Left:
+                self.model.move(Direction.Left)
+            elif key == Qt.Key_Down:
+                self.model.move(Direction.Down)
+            elif key == Qt.Key_Right:
+                self.model.move(Direction.Right)
+            self.update()
+        except Exception:
+            pass
+
+
 
     def paintField(self):
         for x in range(self.width):
@@ -55,10 +60,18 @@ class Window(QMainWindow):
                 self.paintCell(x, y, PyQtGui.FIELD_PIXELS.get(self.model.get(x, y)))
 
     def paintEvent(self, a0: QPaintEvent) -> None:
-        self.paintField()
+        if not self.model.is_over:
+            self.paintField()
 
     def paintCell(self, x: int, y: int, color: QColor) -> None:
         self.qp.begin(self)
         self.qp.fillRect(x * PyQtGui.cell_size, y * PyQtGui.cell_size,
                          PyQtGui.cell_size, PyQtGui.cell_size, color)
+
+        painter = QPainter(self)
+        painter.setPen(QPen(Qt.black, 5, Qt.SolidLine))
+
+        painter.drawRect(x * PyQtGui.cell_size, y * PyQtGui.cell_size,
+                         PyQtGui.cell_size, PyQtGui.cell_size)
+        painter.end()
         self.qp.end()
