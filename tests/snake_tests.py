@@ -1,6 +1,6 @@
 import pytest
-from common.Point import Point
-from enums import Direction
+from common.point import Point
+from common.enums import Direction
 from common.snake import Snake
 
 

@@ -1,5 +1,5 @@
 from common.enums import Direction
-from common.Point import Point
+from common.point import Point
 
 
 class Snake:
@@ -25,15 +25,11 @@ class Snake:
             self.points.reverse()
 
     def move(self, direction: Direction) -> None:
-        '''Move the snake one block in the given direction'''
-        target_point = Point(
-            self.head.x + direction.value.x,
-            self.head.y + direction.value.y)
+        """Move the snake one block in the given direction"""
+        target_point = self.head + direction.value
+
         if self._coordinate_limits:
-            limits = self._coordinate_limits
-            target_point = Point(
-                (limits.x + target_point.x) % limits.x,
-                (limits.y + target_point.y) % limits.y)
+            target_point %= self._coordinate_limits
 
         if target_point == self.points[1]:
             raise AttributeError("Snake can't move on opposite direction")
@@ -53,8 +49,7 @@ class Snake:
         return self.points
 
     def can_collide_with_itself(self, direction: Direction) -> bool:
-        target = Point(self.head.x + direction.value.x,
-                       self.head.y + direction.value.y)
+        target = self.head + direction.value
         if target in self.points[:-1]:
             return True
         return False
