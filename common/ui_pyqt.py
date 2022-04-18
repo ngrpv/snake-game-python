@@ -15,7 +15,7 @@ class PyQtGui:
         MapCellType.Food: QColor(250, 0, 0),
         MapCellType.Obstacle: QColor(0, 0, 250)
     }
-    cell_size = 50
+    cell_size = 20
 
     def __init__(self, game: Game, start_direction: Direction):
         self.game = game
@@ -36,6 +36,18 @@ class Window(QMainWindow):
         self.dimensions = game.map_dimensions
         self.width = self.dimensions.x
         self.height = self.dimensions.y
+
+    def keyPressEvent(self, event):
+        key = event.key()
+        if key == Qt.Key_Up:
+            self.model.move(Direction.Up)
+        elif key == Qt.Key_Left:
+            self.model.move(Direction.Left)
+        elif key == Qt.Key_Down:
+            self.model.move(Direction.Down)
+        elif key == Qt.Key_Right:
+            self.model.move(Direction.Right)
+        self.update()
 
     def paintField(self):
         for x in range(self.width):
