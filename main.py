@@ -1,7 +1,7 @@
 from common.enums import Direction
 from common.game import Game
 from common.map_empty import MapEmpty
-from common.Point import Point
+from common.point import Point
 from common.snake import Snake
 from common.ui_curses import UICurses
 
