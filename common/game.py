@@ -2,7 +2,7 @@ from random import randint
 
 from common.enums import Direction, MapCellType
 from common.game_map import GameMap
-from common.Point import Point
+from common.point import Point
 from common.snake import Snake
 
 
@@ -35,6 +35,10 @@ class Game:
         return Point(self._map.width, self._map.height)
 
     @property
+    def _map_size(self):
+        return Point(self._map.width, self._map.height)
+
+    @property
     def score(self):
         return self._score
 
@@ -49,19 +53,16 @@ class Game:
         if point == self._food_point:
             return MapCellType.Food
         for candidate in self._snake.get_points():
-            candidate_x = (candidate.x + self._map.width) % self._map.width
-            candidate_y = (candidate.y + self._map.height) % self._map.height
-            if Point(candidate_x, candidate_y) == point:
+            candidate_truncated = candidate % self._map_size
+            if candidate_truncated == point:
                 return MapCellType.Snake
 
         return self._map.get(x, y)
 
     def is_direction_valid(self, direction: Direction) -> bool:
         """Check, if submitted direction is valid to move"""
-
-        negative_direction = Point(-direction.value.x, -direction.value.y)
         return not self._previous_direction \
-            or self._previous_direction.value != negative_direction
+            or self._previous_direction.value != -direction.value
 
     def move(self, direction: Direction) -> None:
         """Move snake in specified direction"""
@@ -73,23 +74,14 @@ class Game:
 
         self._previous_direction = direction
 
-        head = self._snake.head
-        dirv = direction.value
-        mapw = self._map.width
-        maph = self._map.height
-
-        head = Point(
-            (mapw + head.x + dirv.x) % mapw,
-            (maph + head.y + dirv.y) % maph
-        )
-
-        if (self._snake.can_collide_with_itself(direction)
-                or self._map.get(head.x, head.y) == MapCellType.Obstacle):
+        head = self._snake.head % self._map_size
+        if self._snake.can_collide_with_itself(direction) \
+                or self._map.get(head.x, head.y) == MapCellType.Obstacle:
             self._is_game_over = True
             return
 
         self._snake.move(direction)
-        if head == self._food_point:
+        if self._snake.head == self._food_point:
             self._snake.grow()
             self._score += 1
             self._next_food()

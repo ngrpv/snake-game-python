@@ -1,6 +1,6 @@
 from enum import Enum
 
-from common.Point import Point
+from common.point import Point
 
 
 class Direction(Enum):

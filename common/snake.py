@@ -1,12 +1,10 @@
 from common.enums import Direction
-from common.Point import Point
+from common.point import Point
 
 
 class Snake:
-    '''Snake entity for classic snake game'''
+    """Snake entity for classic snake game"""
     def __init__(self, head: Point, tail: Point):
-        if head.x < 0 or head.y < 0 or tail.x < 0 or tail.y < 0:
-            raise AttributeError('Initial coordinates must be non-negative')
         self.tail = tail
         self.head = head
         self.points = []
@@ -29,17 +27,13 @@ class Snake:
             self.points.reverse()
 
     def move(self, direction: Direction) -> None:
-        '''Move the snake one block in the given direction'''
-        target_point = Point(
-            self.head.x + direction.value.x,
-            self.head.y + direction.value.y)
-        if self._coordinate_limits:
-            limits = self._coordinate_limits
-            target_point = Point(
-                (limits.x + target_point.x) % limits.x,
-                (limits.y + target_point.y) % limits.y)
+        """Move the snake one block in the given direction"""
+        target_point = self.head + direction.value
 
-        if len(self.points) > 1 and target_point == self.points[1]:
+        if self._coordinate_limits:
+            target_point %= self._coordinate_limits
+
+        if target_point == self.points[1]:
             raise AttributeError("Snake can't move on opposite direction")
         self.previous_tail_position = self.points[-1]
         for i in range(len(self.points)):
@@ -48,23 +42,19 @@ class Snake:
         self.tail = self.points[-1]
 
     def grow(self):
-        '''Grow snake to one block in tail'''
+        """Grows snake to one block in tail"""
         self.points.append(self.previous_tail_position)
 
     def set_coordinate_limits(self, x, y):
-        '''Coordinates limit for snake. If snake out of bounds it'll appear from other side of map'''
-        if x < 1 or y < 1:
-            raise AttributeError('limits should be more than zero')
+        """Coordinates limit for snake. If snake out of bounds it'll appear from other side of map"""
         self._coordinate_limits = Point(x, y)
 
     def get_points(self):
-        '''Returns points of snake'''
         return self.points
 
     def can_collide_with_itself(self, direction: Direction) -> bool:
-        '''Checks if snake can collide with self on moving given direction'''
-        target = Point(self.head.x + direction.value.x,
-                       self.head.y + direction.value.y)
+        """Checks if snake can collide with self on moving given direction"""
+        target = self.head + direction.value
         if target in self.points[:-1]:
             return True
         return False
