@@ -1,10 +1,9 @@
 import curses
 import traceback
-from time import sleep
 
+from time import sleep
 from common.enums import Direction, MapCellType
 from common.game import Game
-from common.Point import Point
 
 
 class UICurses:
@@ -19,9 +18,8 @@ class UICurses:
 
     @staticmethod
     def get_screen_size_wh() -> (int, int):
-        result = None
         try:
-            stdscr = stdscr = curses.initscr()
+            stdscr = curses.initscr()
             result = stdscr.getmaxyx()
         finally:
             curses.endwin()
@@ -37,10 +35,9 @@ class UICurses:
 
         game_is_running = True
         try:
-            previous_direction = None
             direction = start_direction
             update_count = 0
-            while game_is_running and not self._model.is_over:
+            while game_is_running and not self._model.is_game_over:
                 inp = self._stdscr.getch()
                 key_code = inp
                 while inp != curses.ERR:

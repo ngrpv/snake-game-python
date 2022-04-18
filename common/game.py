@@ -43,7 +43,7 @@ class Game:
         return self._score
 
     @property
-    def is_over(self) -> bool:
+    def is_game_over(self) -> bool:
         return self._is_game_over
 
     def get(self, x: int, y: int) -> MapCellType:
