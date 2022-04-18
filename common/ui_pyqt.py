@@ -10,10 +10,10 @@ class PyQtGui:
     ONE_TICK_SEC = 0.05
     AUTOMOVE_TICKS = 5
     FIELD_PIXELS = {
-        MapCellType.Empty: " ",
-        MapCellType.Snake: "o",
-        MapCellType.Food: "@",
-        MapCellType.Obstacle: "#"
+        MapCellType.Empty: QColor(0,0,0),
+        MapCellType.Snake: QColor(0, 250, 0),
+        MapCellType.Food: QColor(250, 0, 0),
+        MapCellType.Obstacle: QColor(0, 0, 250)
     }
     cell_size = 50
 
@@ -21,20 +21,29 @@ class PyQtGui:
         self.game = game
         self.current_direction = start_direction
         app = QApplication([])
-        window = Window()
+        window = Window(game)
         sys.exit(app.exec_())
 
 
 class Window(QMainWindow):
-    def __init__(self):
+    def __init__(self, game: Game):
         super(Window, self).__init__()
         self.show()
         self.setWindowTitle("Snake game")
         self.setGeometry(200, 100, 600, 400)
         self.qp = QPainter(self)
+        self.model = game
+        self.dimensions = game.map_dimensions
+        self.width = self.dimensions.x
+        self.height = self.dimensions.y
+
+    def paintField(self):
+        for x in range(self.width):
+            for y in range(self.height):
+                self.paintCell(x, y, PyQtGui.FIELD_PIXELS.get(self.model.get(x, y)))
 
     def paintEvent(self, a0: QPaintEvent) -> None:
-        self.paintCell(2, 2, QColor(255, 1, 1))
+        self.paintField()
 
     def paintCell(self, x: int, y: int, color: QColor) -> None:
         self.qp.begin(self)
