@@ -6,8 +6,8 @@ from common.level_quarters import QuartersLevel
 from common.ui_pyqt import PyQtGui
 
 if __name__ == "__main__":
-    width = 30
-    height = 15
+    width = 100
+    height = 100
 
     levels = [
         QuartersLevel(width, height, 10),

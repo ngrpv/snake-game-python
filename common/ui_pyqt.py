@@ -22,16 +22,22 @@ class PyQtGui:
     def __init__(self, game: Game):
         self.game = game
         app = QApplication([])
-        window = Window(game)
+        screen = app.primaryScreen()
+        size = screen.size()
+        width, height = game.map_dimensions.x, game.map_dimensions.y
+        PyQtGui.CELL_SIZE = min(size.width() // width,
+                                size.height() // height) * 0.90
+        window = Window(game, width * PyQtGui.CELL_SIZE,
+                        height * PyQtGui.CELL_SIZE)
         sys.exit(app.exec_())
 
 
 class Window(QMainWindow):
-    def __init__(self, game: Game):
+    def __init__(self, game: Game, width, height):
         super(Window, self).__init__()
         self.show()
         self.setWindowTitle("Snake game")
-        self.setGeometry(200, 100, 800, 600)
+        self.setGeometry(20, 40, width, height)
         self.qp = QPainter(self)
         self.model = game
         self.dimensions = game.map_dimensions
@@ -42,8 +48,6 @@ class Window(QMainWindow):
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.tick)
         self.timer.start(PyQtGui.ONE_TICK_MS)
-        self.line_painter = QPainter(self)
-        self.line_painter.setPen(QPen(Qt.black, 5, Qt.SolidLine))
 
     def start(self):
         while True:
@@ -88,7 +92,7 @@ class Window(QMainWindow):
         self.qp.end()
 
         painter = QPainter(self)
-        painter.setPen(QPen(Qt.black, 5, Qt.SolidLine))
+        painter.setPen(QPen(Qt.black, PyQtGui.CELL_SIZE*0.1, Qt.SolidLine))
         painter.drawRect(x * PyQtGui.CELL_SIZE, y * PyQtGui.CELL_SIZE,
                          PyQtGui.CELL_SIZE, PyQtGui.CELL_SIZE)
         painter.end()
