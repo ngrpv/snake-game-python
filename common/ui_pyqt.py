@@ -42,6 +42,8 @@ class Window(QMainWindow):
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.tick)
         self.timer.start(PyQtGui.ONE_TICK_MS)
+        self.line_painter = QPainter(self)
+        self.line_painter.setPen(QPen(Qt.black, 5, Qt.SolidLine))
 
     def start(self):
         while True:
@@ -83,11 +85,10 @@ class Window(QMainWindow):
         self.qp.begin(self)
         self.qp.fillRect(x * PyQtGui.CELL_SIZE, y * PyQtGui.CELL_SIZE,
                          PyQtGui.CELL_SIZE, PyQtGui.CELL_SIZE, color)
+        self.qp.end()
 
         painter = QPainter(self)
         painter.setPen(QPen(Qt.black, 5, Qt.SolidLine))
-
         painter.drawRect(x * PyQtGui.CELL_SIZE, y * PyQtGui.CELL_SIZE,
                          PyQtGui.CELL_SIZE, PyQtGui.CELL_SIZE)
         painter.end()
-        self.qp.end()
