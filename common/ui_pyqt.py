@@ -6,11 +6,10 @@ from PyQt5.QtWidgets import *
 
 from common.enums import Direction, MapCellType
 from common.game import Game
-from common.point import Point
 
 
 class PyQtGui:
-    ONE_TICK_MS = 500
+    ONE_TICK_MS = 350
     FIELD_PIXELS = {
         MapCellType.Empty: QColor(0, 0, 0),
         MapCellType.Snake: QColor(0, 250, 0),
@@ -48,6 +47,9 @@ class Window(QMainWindow):
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.tick)
         self.timer.start(PyQtGui.ONE_TICK_MS)
+        self.separators_painter = QPainter(self)
+        self.separators_painter.setPen(
+            QPen(Qt.black, PyQtGui.CELL_SIZE * 0.1, Qt.SolidLine))
 
     def start(self):
         while True:
@@ -90,9 +92,8 @@ class Window(QMainWindow):
         self.qp.fillRect(x * PyQtGui.CELL_SIZE, y * PyQtGui.CELL_SIZE,
                          PyQtGui.CELL_SIZE, PyQtGui.CELL_SIZE, color)
         self.qp.end()
-
-        painter = QPainter(self)
-        painter.setPen(QPen(Qt.black, PyQtGui.CELL_SIZE*0.1, Qt.SolidLine))
-        painter.drawRect(x * PyQtGui.CELL_SIZE, y * PyQtGui.CELL_SIZE,
-                         PyQtGui.CELL_SIZE, PyQtGui.CELL_SIZE)
-        painter.end()
+        self.separators_painter.begin(self)
+        self.separators_painter.drawRect(x * PyQtGui.CELL_SIZE,
+                                         y * PyQtGui.CELL_SIZE,
+                                         PyQtGui.CELL_SIZE, PyQtGui.CELL_SIZE)
+        self.separators_painter.end()
