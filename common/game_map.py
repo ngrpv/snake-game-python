@@ -2,6 +2,7 @@ from common.enums import MapCellType
 
 
 class GameMap:
+    """Game map abstract class"""
     def __init__(self, width: int, height: int):
         if width < 0 or height < 0:
             raise ValueError("Map width or height cannot be negative!")
@@ -30,6 +31,6 @@ class GameMap:
         implemented in particular implementation"""
         pass
 
-    def _get(x: int, y: int) -> MapCellType:
+    def _get(self, x: int, y: int) -> MapCellType:
         "Map getter"
         pass

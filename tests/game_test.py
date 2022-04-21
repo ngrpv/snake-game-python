@@ -1,12 +1,12 @@
-import unittest
-
 import pytest
+import unittest
 
 from common.game import Game
 from common.snake import Snake
-from common.Point import Point
-from common.map_empty import MapEmpty
+from common.point import Point
+from common.level_empty import MapEmpty
 from common.enums import Direction, MapCellType
+
 
 class TestGame(unittest.TestCase):
     def setUp(self):
@@ -27,9 +27,9 @@ class TestGame(unittest.TestCase):
         game = Game(self.snake, self.map)
         game.move(Direction.Down)
         game.move(Direction.Left)
-        assert not game.is_over
+        assert not game.is_game_over
         game.move(Direction.Up)
-        assert game.is_over
+        assert game.is_game_over
 
     def test_game_score_increment_if_snake_eats(self):
         game = Game(self.snake, self.map)
@@ -41,7 +41,7 @@ class TestGame(unittest.TestCase):
     def test_snake_grows(self):
         game = Game(self.snake, self.map)
         game._food_point = Point(7, 0)
-        assert game.get(6,0) == MapCellType.Snake
+        assert game.get(6, 0) == MapCellType.Snake
         game.move(Direction.Right)
         assert game.get(7, 0) == MapCellType.Snake
         assert game.get(0, 0) == MapCellType.Snake

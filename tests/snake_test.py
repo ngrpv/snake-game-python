@@ -1,5 +1,5 @@
 import pytest
-from common.Point import Point
+from common.point import Point
 from common.enums import Direction
 from common.snake import Snake
 
