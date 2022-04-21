@@ -1,9 +1,9 @@
+from common.game_map import GameMap, MapCellType
 from common.level import GameLevel
 from common.snake import Snake
 from common.game_map import GameMap
 from common.enums import Direction
 from common.point import Point
-from common.map_empty import MapEmpty
 
 
 class EmptyLevel(GameLevel):
@@ -17,3 +17,10 @@ class EmptyLevel(GameLevel):
 
     def _get_start_direction(self) -> Direction:
         return Direction.Left
+
+
+class MapEmpty(GameMap):
+    """Empty game map"""
+
+    def _get(self, x: int, y: int) -> MapCellType:
+        return MapCellType.Empty

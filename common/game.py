@@ -9,13 +9,12 @@ class Game:
     def __init__(self, levels: list[GameLevel]):
         self._levels = levels
         self._level = None
+        self._level_number = 0
+        self._is_game_clear = False
         self._food_point = None
         self._previous_direction = None
         self._score = 0
         self._score_on_level = 0
-        self._snake.set_coordinate_limits(
-            self._map.width,
-            self._map.height)
 
         self._is_game_over = not self._next_level()
 
@@ -23,14 +22,19 @@ class Game:
         self._score_on_level = 0
 
         if len(self._levels) == 0:
+            self._is_game_clear = True
             return False
         level = self._levels.pop(0)
+        self._level_number += 1
 
         self._level = level
         self._snake = level.snake
         self._previous_direction = level.start_direction
         self._map = level.map
 
+        self._snake.set_coordinate_limits(
+            self._map.width,
+            self._map.height)
         self._next_food()
         return True
 
@@ -60,6 +64,14 @@ class Game:
     def is_game_over(self) -> bool:
         return self._is_game_over
 
+    @property
+    def level_number(self) -> int:
+        return self._level_number
+
+    @property
+    def is_game_clear(self) -> bool:
+        return self._is_game_clear
+
     def get(self, x: int, y: int) -> MapCellType:
         """Get current map representation for view"""
 
@@ -77,8 +89,10 @@ class Game:
         """Check, if submitted direction is valid to move"""
         return not self._previous_direction or self._previous_direction.value != -direction.value
 
-    def move(self, direction: Direction) -> None:
+    def move(self, direction: Direction = None) -> None:
         """Move snake in specified direction"""
+        if not direction:
+            direction = self._previous_direction
 
         if not self.is_direction_valid(direction):
             raise AttributeError("Snake can't move on opposite direction")

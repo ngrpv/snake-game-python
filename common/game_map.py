@@ -31,6 +31,6 @@ class GameMap:
         implemented in particular implementation"""
         pass
 
-    def _get(x: int, y: int) -> MapCellType:
+    def _get(self, x: int, y: int) -> MapCellType:
         "Map getter"
         pass
