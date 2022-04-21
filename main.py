@@ -1,18 +1,19 @@
-from common.enums import Direction
 from common.game import Game
-from common.map_empty import MapEmpty
-from common.maps import Level1
-from common.Point import Point
-from common.snake import Snake
+from common.level_empty import EmptyLevel
+from common.level_with_borders import WithBordersLevel
 from common.ui_curses import UICurses
-from common.ui_pyqt import PyQtGui
+from common.level_quarters import QuartersLevel
 
 if __name__ == "__main__":
-    width, height = UICurses.get_screen_size_wh()
-    map_lvl1 = Level1(width, height - 1)
-    game_map = MapEmpty(width, height - 1)
-    snake = Snake(Point(8, 8), Point(10, 8))
-    model = Game(snake, map_lvl1)
-    model.get(0, 0)
-  #  UICurses(model, Direction.Left)
-    PyQtGui(model, Direction.Left)
+    screen_width, screen_height = UICurses.get_screen_size_wh()
+    width = screen_width
+    height = screen_height - 1
+
+    levels = [
+        QuartersLevel(width, height, 10),
+        EmptyLevel(width, height, 2),
+        WithBordersLevel(width, height, 3)
+              ]
+
+    model = Game(levels)
+    UICurses(model)
