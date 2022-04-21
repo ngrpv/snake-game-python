@@ -4,7 +4,7 @@ import unittest
 from common.game import Game
 from common.snake import Snake
 from common.point import Point
-from common.map_empty import MapEmpty
+from common.level_empty import MapEmpty
 from common.enums import Direction, MapCellType
 
 
