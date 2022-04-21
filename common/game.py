@@ -1,24 +1,38 @@
 from random import randint
 
 from common.enums import Direction, MapCellType
-from common.game_map import GameMap
+from common.level import GameLevel
 from common.point import Point
-from common.snake import Snake
 
 
 class Game:
-    def __init__(self, snake: Snake, game_map: GameMap):
-        self._snake = snake
-        self._map = game_map
-        self._is_game_over = False
+    def __init__(self, levels: list[GameLevel]):
+        self._levels = levels
+        self._level = None
         self._food_point = None
-        self._next_food()
-        self._last_direction = None
-        self._score = 0
         self._previous_direction = None
+        self._score = 0
+        self._score_on_level = 0
         self._snake.set_coordinate_limits(
             self._map.width,
             self._map.height)
+
+        self._is_game_over = not self._next_level()
+
+    def _next_level(self) -> bool:
+        self._score_on_level = 0
+
+        if len(self._levels) == 0:
+            return False
+        level = self._levels.pop(0)
+
+        self._level = level
+        self._snake = level.snake
+        self._previous_direction = level.start_direction
+        self._map = level.map
+
+        self._next_food()
+        return True
 
     def _next_food(self) -> None:
         is_point_generated = False
@@ -61,8 +75,7 @@ class Game:
 
     def is_direction_valid(self, direction: Direction) -> bool:
         """Check, if submitted direction is valid to move"""
-        return not self._previous_direction \
-            or self._previous_direction.value != -direction.value
+        return not self._previous_direction or self._previous_direction.value != -direction.value
 
     def move(self, direction: Direction) -> None:
         """Move snake in specified direction"""
@@ -84,4 +97,9 @@ class Game:
         if self._snake.head == self._food_point:
             self._snake.grow()
             self._score += 1
+            self._score_on_level += 1
+            if self._score_on_level == self._level.clear_score:
+                self._is_game_over = not self._next_level()
+                if self._is_game_over:
+                    return
             self._next_food()
