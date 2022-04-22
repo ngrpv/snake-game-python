@@ -12,10 +12,11 @@ class PyQtGui:
     ONE_TICK_MS = 350
     FIELD_PIXELS = {
         MapCellType.Empty: QColor(0, 0, 0),
-        MapCellType.Snake: QColor(0, 250, 0),
-        MapCellType.Food: QColor(250, 0, 0),
-        MapCellType.Obstacle: QColor(0, 0, 250)
+        MapCellType.Snake: QColor(0, 170, 0),
+        MapCellType.Food: QColor(190, 0, 0),
+        MapCellType.Obstacle: QColor(0, 0, 190)
     }
+    GAME_OVER_COLOR = QColor(255, 255, 255)
     CELL_SIZE = 20
 
     def __init__(self, game: Game):
@@ -25,7 +26,7 @@ class PyQtGui:
         size = screen.size()
         width, height = game.map_dimensions.x, game.map_dimensions.y
         PyQtGui.CELL_SIZE = int(min(size.width() // width,
-                                size.height() // height) * 0.90)
+                                    size.height() // height) * 0.90)
         window = Window(game, width * PyQtGui.CELL_SIZE,
                         height * PyQtGui.CELL_SIZE)
         sys.exit(app.exec_())
@@ -40,8 +41,10 @@ class Window(QMainWindow):
         self.qp = QPainter(self)
         self.model = game
         self.dimensions = game.map_dimensions
-        self.width = self.dimensions.x
-        self.height = self.dimensions.y
+        self.game_width = self.dimensions.x
+        self.game_height = self.dimensions.y
+        self.width = width
+        self.height = height
         self.prev_direction = None
         self.current_direction = None
         self.timer = QTimer(self)
@@ -51,21 +54,16 @@ class Window(QMainWindow):
         self.separators_painter.setPen(
             QPen(Qt.black, PyQtGui.CELL_SIZE * 0.5, Qt.SolidLine))
 
-
         self.layout = QVBoxLayout()
         self.label = QLabel("Score")
         self.layout.addWidget(self.label)
+        self.layout.setGeometry(QRect(10, 10, 100, 100))
         self.setLayout(self.layout)
-
-    def start(self):
-        while True:
-            self.tick()
 
     def keyPressEvent(self, event):
         self.tick(event.key())
 
     def tick(self, key=None):
-        direction = None
         if key == Qt.Key_Up:
             direction = Direction.Up
         elif key == Qt.Key_Left:
@@ -74,24 +72,39 @@ class Window(QMainWindow):
             direction = Direction.Down
         elif key == Qt.Key_Right:
             direction = Direction.Right
-        if direction is None:
+        else:
             direction = self.prev_direction
         if not direction or not self.model.is_direction_valid(direction):
             return
         self.prev_direction = direction
         self.model.move(direction)
-        self.timer.start()
+        if self.model.is_game_over:
+            self.timer.stop()
+        else:
+            self.timer.start()
         self.update()
 
     def paint_field(self):
-        for x in range(self.width):
-            for y in range(self.height):
+        for x in range(self.game_width):
+            for y in range(self.game_height):
                 self.paint_cell(x, y,
                                 PyQtGui.FIELD_PIXELS.get(self.model.get(x, y)))
+        if self.model.is_game_over:
+            self.print_game_over()
+
+    def print_game_over(self):
+        painter = QPainter(self)
+        painter.begin(self)
+        painter.setPen(PyQtGui.GAME_OVER_COLOR)
+        painter.setFont(QFont("Arial", 50))
+        game_over_text = "You win!!1" if self.model.is_game_clear else "Game over"
+        painter.drawText(0, 0, self.width, self.height,
+                         Qt.AlignCenter,
+                         f"{game_over_text}\nScore: {self.model.score}")
+        painter.end()
 
     def paintEvent(self, a0: QPaintEvent) -> None:
-        if not self.model.is_game_over:
-            self.paint_field()
+        self.paint_field()
 
     def paint_cell(self, x: int, y: int, color: QColor) -> None:
         self.qp.begin(self)
@@ -105,4 +118,3 @@ class Window(QMainWindow):
                                          y * PyQtGui.CELL_SIZE,
                                          PyQtGui.CELL_SIZE, PyQtGui.CELL_SIZE)
         self.separators_painter.end()
-
