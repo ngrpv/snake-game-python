@@ -97,7 +97,7 @@ class Window(QMainWindow):
         painter.begin(self)
         painter.setPen(PyQtGui.GAME_OVER_COLOR)
         painter.setFont(QFont("Arial", 50))
-        game_over_text = "You win!!1" if self.model.is_game_clear else "Game over"
+        game_over_text = "You win!!!" if self.model.is_game_clear else "Game over"
         painter.drawText(0, 0, self.width, self.height,
                          Qt.AlignCenter,
                          f"{game_over_text}\nScore: {self.model.score}")
