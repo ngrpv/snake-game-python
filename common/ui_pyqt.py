@@ -17,6 +17,7 @@ class PyQtGui:
         MapCellType.Obstacle: QColor(0, 0, 190)
     }
     GAME_OVER_COLOR = QColor(255, 255, 255)
+    SCORE_COLOR = QColor(255, 255, 255)
     CELL_SIZE = 20
 
     def __init__(self, game: Game):
@@ -89,6 +90,8 @@ class Window(QMainWindow):
             for y in range(self.game_height):
                 self.paint_cell(x, y,
                                 PyQtGui.FIELD_PIXELS.get(self.model.get(x, y)))
+
+        self.print_score_level()
         if self.model.is_game_over:
             self.print_game_over()
 
@@ -97,10 +100,23 @@ class Window(QMainWindow):
         painter.begin(self)
         painter.setPen(PyQtGui.GAME_OVER_COLOR)
         painter.setFont(QFont("Arial", 50))
-        game_over_text = "You win!!!" if self.model.is_game_clear else "Game over"
+        game_over_text = "You win!!!" \
+            if self.model.is_game_clear \
+            else f"Game over"
         painter.drawText(0, 0, self.width, self.height,
-                         Qt.AlignCenter,
-                         f"{game_over_text}\nScore: {self.model.score}")
+                         Qt.AlignCenter, game_over_text)
+        painter.end()
+
+    def print_score_level(self):
+        painter = QPainter(self)
+        painter.begin(self)
+        painter.setPen(PyQtGui.SCORE_COLOR)
+        painter.setFont(QFont("Arial", 16))
+        painter.drawText(0, 0, self.width, self.height,
+                         Qt.AlignLeft, f"Score: {self.model.score}")
+        painter.drawText(0, 0, self.width, self.height,
+                         Qt.AlignRight, f"Level: {self.model.level_number} ")
+
         painter.end()
 
     def paintEvent(self, a0: QPaintEvent) -> None:
