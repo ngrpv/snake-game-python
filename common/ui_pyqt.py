@@ -1,8 +1,8 @@
 import sys
 
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import *
+from PyQt5.QtCore import QTimer, Qt
+from PyQt5.QtGui import QColor, QPainter, QPen, QFont, QPaintEvent
+from PyQt5.QtWidgets import QApplication, QMainWindow
 
 from common.enums import Direction, MapCellType
 from common.game import Game
@@ -54,12 +54,6 @@ class Window(QMainWindow):
         self.separators_painter = QPainter(self)
         self.separators_painter.setPen(
             QPen(Qt.black, PyQtGui.CELL_SIZE * 0.5, Qt.SolidLine))
-
-        self.layout = QVBoxLayout()
-        self.label = QLabel("Score")
-        self.layout.addWidget(self.label)
-        self.layout.setGeometry(QRect(10, 10, 100, 100))
-        self.setLayout(self.layout)
 
     def keyPressEvent(self, event):
         self.tick(event.key())

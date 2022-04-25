@@ -10,9 +10,9 @@ if __name__ == "__main__":
     height = 30
 
     levels = [
-        EmptyLevel(width, height, 6),
-        WithBordersLevel(width, height, 7),
-        QuartersLevel(width, height, 10),
+        EmptyLevel(width, height, 4),
+        WithBordersLevel(width, height, 6),
+        QuartersLevel(width, height, 8),
         ComplexLevel(width, height, 10),
     ]
 
