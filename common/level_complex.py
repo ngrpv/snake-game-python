@@ -34,7 +34,7 @@ class ComplexMap(GameMap):
         self.add_line(Point(0, height * 2 // 3),
                       Point(0, height))
         self.add_line(Point(0, height // 3),
-                      Point(width // 3, height//3))
+                      Point(width // 3, height // 3))
         self.add_line(Point(width // 3, 0),
                       Point(width // 3, height // 3 + 1))
 

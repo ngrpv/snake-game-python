@@ -6,7 +6,9 @@ from common.snake import Snake
 
 
 class QuartersLevel(EmptyLevel):
-    """Level with; map which divided into 4 regions, reachable by edges trespassing only"""
+    """Level with; map which divided into 4 regions, reachable by edges
+    trespassing only """
+
     def _create_map(self, width: int, height: int) -> GameMap:
         return QuartersMap(width, height)
 
@@ -19,7 +21,8 @@ class QuartersLevel(EmptyLevel):
 
 
 class QuartersMap(GameMap):
-    """Game map which divided into 4 regions, reachable by edges trespassing only"""
+    """Game map which divided into 4 regions, reachable by edges trespassing
+    only """
 
     def _generate_map(self) -> None:
         self._half_width = self.width // 2

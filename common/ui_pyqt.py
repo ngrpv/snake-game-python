@@ -69,14 +69,17 @@ class Window(QMainWindow):
             direction = Direction.Right
         else:
             direction = self.prev_direction
+
         if not direction or not self.model.is_direction_valid(direction):
             return
+
         self.prev_direction = direction
         self.model.move(direction)
         if self.model.is_game_over:
             self.timer.stop()
         else:
             self.timer.start()
+
         self.update()
 
     def paint_field(self):
@@ -94,9 +97,7 @@ class Window(QMainWindow):
         painter.begin(self)
         painter.setPen(PyQtGui.GAME_OVER_COLOR)
         painter.setFont(QFont("Arial", 50))
-        game_over_text = "You win!!!" \
-            if self.model.is_game_clear \
-            else f"Game over"
+        game_over_text = "You win!!!" if self.model.is_game_clear else f"Game over"
         painter.drawText(0, 0, self.width, self.height,
                          Qt.AlignCenter, game_over_text)
         painter.end()
@@ -126,5 +127,6 @@ class Window(QMainWindow):
             QPen(Qt.black, PyQtGui.CELL_SIZE * 0.15, Qt.SolidLine))
         self.separators_painter.drawRect(x * PyQtGui.CELL_SIZE,
                                          y * PyQtGui.CELL_SIZE,
-                                         PyQtGui.CELL_SIZE, PyQtGui.CELL_SIZE)
+                                         PyQtGui.CELL_SIZE,
+                                         PyQtGui.CELL_SIZE)
         self.separators_painter.end()

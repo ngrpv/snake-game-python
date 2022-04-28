@@ -15,23 +15,20 @@ class Game:
         self._previous_direction = None
         self._score = 0
         self._score_on_level = 0
-
         self._is_game_over = not self._next_level()
 
     def _next_level(self) -> bool:
         self._score_on_level = 0
-
         if len(self._levels) == 0:
             self._is_game_clear = True
             return False
+
         level = self._levels.pop(0)
         self._level_number += 1
-
         self._level = level
         self._snake = level.snake
         self._previous_direction = level.start_direction
         self._map = level.map
-
         self._snake.set_coordinate_limits(
             self._map.width,
             self._map.height)
@@ -74,7 +71,6 @@ class Game:
 
     def get(self, x: int, y: int) -> MapCellType:
         """Get current map representation for view"""
-
         point = Point(x, y)
         if point == self._food_point:
             return MapCellType.Food
@@ -96,14 +92,14 @@ class Game:
 
         if not self.is_direction_valid(direction):
             raise AttributeError("Snake can't move on opposite direction")
+
         if self._is_game_over:
             return
 
         self._previous_direction = direction
-
         head = self._snake.head % self._map_size
-        if self._snake.can_collide_with_itself(direction) \
-                or self._map.get(head.x, head.y) == MapCellType.Obstacle:
+        if (self._snake.can_collide_with_itself(direction) or
+                self._map.get(head.x, head.y) == MapCellType.Obstacle):
             self._is_game_over = True
             return
 
