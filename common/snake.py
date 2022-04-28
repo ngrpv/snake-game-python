@@ -28,16 +28,18 @@ class Snake:
 
     def move(self, direction: Direction) -> None:
         """Move the snake one block in the given direction"""
-        target_point = self.head + direction.value
+        self.teleport(self.head + direction.value)
 
+    def teleport(self, position: Point):
+        """Make the snake by teleporting its head to given position"""
         if self._coordinate_limits:
-            target_point %= self._coordinate_limits
+            position %= self._coordinate_limits
 
-        if target_point == self.points[1]:
+        if position == self.points[1]:
             raise AttributeError("Snake can't move on opposite direction")
         self.previous_tail_position = self.points[-1]
         for i in range(len(self.points)):
-            self.points[i], target_point = target_point, self.points[i]
+            self.points[i], position = position, self.points[i]
         self.head = self.points[0]
         self.tail = self.points[-1]
 
