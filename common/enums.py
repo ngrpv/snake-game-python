@@ -15,3 +15,4 @@ class MapCellType(Enum):
     Obstacle = 1
     Food = 2
     Snake = 3
+    Portal = 4
