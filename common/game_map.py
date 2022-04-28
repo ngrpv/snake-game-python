@@ -1,4 +1,19 @@
 from common.enums import MapCellType
+from common.point import Point
+
+
+class Portal:
+    def __init__(self, position: Point, destination: Point):
+        self._position = position
+        self._destination = destination
+
+    @property
+    def position(self) -> Point:
+        return self._position
+
+    @property
+    def destination(self) -> Point:
+        return self._destination
 
 
 class GameMap:
@@ -10,6 +25,7 @@ class GameMap:
 
         self._width = width
         self._height = height
+        self._portals = self._generate_portals()
         self._generate_map()
 
     @property
@@ -20,11 +36,22 @@ class GameMap:
     def height(self):
         return self._height
 
+    @property
+    def portals(self) -> tuple[Portal]:
+        return self._portals
+
     def get(self, x: int, y: int) -> MapCellType:
         """Retrieve cell type at (x, y)"""
         if x < 0 or x >= self._width or y < 0 or y >= self._height:
             raise IndexError(
                 f"Coordinates index out of map size range: ({x}, {y})")
+
+        point = Point(x, y)
+
+        for portal in self.portals:
+            if portal.position == point:
+                return MapCellType.Portal
+
         return self._get(x, y)
 
     def _generate_map(self) -> None:
@@ -32,6 +59,10 @@ class GameMap:
         implemented in particular implementation"""
         pass
 
+    def _generate_portals(self) -> tuple[Portal]:
+        """Map portals generation method"""
+        return ()
+
     def _get(self, x: int, y: int) -> MapCellType:
-        "Map getter"
+        """Map getter"""
         pass
