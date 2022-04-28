@@ -14,7 +14,9 @@ class PyQtGui:
         MapCellType.Empty: QColor(0, 0, 0),
         MapCellType.Snake: QColor(0, 170, 0),
         MapCellType.Food: QColor(190, 0, 0),
-        MapCellType.Obstacle: QColor(0, 0, 190)
+        MapCellType.Obstacle: QColor(0, 0, 190),
+        MapCellType.PortalOut: QColor(255, 154, 0),
+        MapCellType.PortalIn: QColor(0, 162, 255)
     }
     GAME_OVER_COLOR = QColor(255, 255, 255)
     SCORE_COLOR = QColor(255, 255, 255)

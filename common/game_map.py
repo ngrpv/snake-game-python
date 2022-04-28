@@ -50,7 +50,10 @@ class GameMap:
 
         for portal in self.portals:
             if portal.position == point:
-                return MapCellType.Portal
+                return MapCellType.PortalIn
+            if portal.destination == point:
+                return MapCellType.PortalOut
+
 
         return self._get(x, y)
 

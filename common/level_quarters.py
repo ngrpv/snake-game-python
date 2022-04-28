@@ -22,9 +22,10 @@ class QuartersLevel(EmptyLevel):
 class QuartersMap(GameMap):
     """Game map which divided into 4 regions, reachable by edges trespassing only"""
 
-    def _generate_portals(self) -> tuple[Portal]:
+    def _generate_portals(self) -> tuple:
         p = Portal(Point(1, 1), Point(self.width - 2, self.height - 2))
-        return p,
+        p2 = Portal( Point(self.width - 2, self.height - 2), Point(1, 1))
+        return tuple([p, p2])
 
     def _generate_map(self) -> None:
         self._half_width = self.width // 2

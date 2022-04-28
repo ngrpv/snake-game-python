@@ -103,7 +103,7 @@ class Game:
             self._is_game_over = True
             return
 
-        if self._map.get(head.x, head.y) == MapCellType.Portal:
+        if self._map.get(head.x, head.y) == MapCellType.PortalIn:
             for portal in self._map.portals:
                 if portal.position == head:
                     self._snake.teleport(portal.destination)
