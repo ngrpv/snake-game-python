@@ -1,7 +1,7 @@
 from common.game_map import GameMap, MapCellType
 from common.level import GameLevel
 from common.snake import Snake
-from common.game_map import GameMap
+from common.game_map import GameMap, Portal
 from common.enums import Direction
 from common.point import Point
 
@@ -42,6 +42,10 @@ class ComplexMap(GameMap):
         if Point(x, y) in self.obstacles:
             return MapCellType.Obstacle
         return MapCellType.Empty
+
+    def _generate_portals(self) -> tuple[Portal]:
+        p = Portal(Point(4, 4), Point(self.width // 2, self.height // 2))
+        return p,
 
     def add_line(self, a: Point, b: Point):
         dx = b.x - a.x

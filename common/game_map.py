@@ -54,7 +54,6 @@ class GameMap:
             if portal.destination == point:
                 return MapCellType.PortalOut
 
-
         return self._get(x, y)
 
     def _generate_map(self) -> None:

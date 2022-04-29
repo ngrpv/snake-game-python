@@ -24,8 +24,7 @@ class QuartersMap(GameMap):
 
     def _generate_portals(self) -> tuple:
         p = Portal(Point(1, 1), Point(self.width - 2, self.height - 2))
-        p2 = Portal( Point(self.width - 2, self.height - 2), Point(1, 1))
-        return tuple([p, p2])
+        return p,
 
     def _generate_map(self) -> None:
         self._half_width = self.width // 2

@@ -83,7 +83,8 @@ class Game:
 
     def is_direction_valid(self, direction: Direction) -> bool:
         """Check, if submitted direction is valid to move"""
-        return not self._previous_direction or self._previous_direction.value != -direction.value
+        return (not self._previous_direction or
+                self._previous_direction.value != -direction.value)
 
     def move(self, direction: Direction = None) -> None:
         """Move snake in specified direction"""
