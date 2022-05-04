@@ -98,3 +98,10 @@ class TestSnake:
         snake.set_coordinate_limits(5, 1)
         snake.move(Direction.Right)
         assert snake.head == Point(0, 0)
+
+    def test_snake_teleports_to_target(self):
+        snake = Snake(Point(3, 0), Point(0, 0))
+        snake.teleport(Point(2, 2))
+        assert snake.get_points() == [
+            Point(2, 2), Point(3, 0), Point(2, 0), Point(1, 0)
+        ]
