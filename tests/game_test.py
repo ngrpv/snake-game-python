@@ -53,6 +53,20 @@ class TestGame(unittest.TestCase):
         with pytest.raises(AttributeError):
             game.move(Direction.Up)
 
+    def test_snake_should_move_prev_direction(self):
+        game = Game(self.map)
+        assert game.get(6, 2) == MapCellType.Empty
+        game.move(Direction.Down)
+        game.move()
+        assert game.get(6, 2) == MapCellType.Snake
+
+    def test_is_game_over_if_score_is_reached(self):
+        game = Game(self.map)
+        game._score_on_level = 9
+        game._food_point = game._snake.head + Point(1, 0)
+        game.move(Direction.Right)
+        assert game.is_game_over
+
 
 class TestLevel(GameLevel):
     def _create_snake(self, width: int, height: int) -> Snake:

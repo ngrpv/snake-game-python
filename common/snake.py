@@ -29,6 +29,8 @@ class Snake:
             self.points.reverse()
 
     def decrease_to_one(self):
+        """Snake decreases to one block(head), then it'll grow from this
+        point before reaching real length """
         self._grow_to_length = len(self.points)
         self.previous_tail_position = self.points[0]
         self.points = [self.head]
