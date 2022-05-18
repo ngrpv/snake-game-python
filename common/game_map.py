@@ -1,15 +1,23 @@
 from common.enums import MapCellType
 from common.point import Point
+from common.enums import PortalDestination
 
 
 class Portal:
-    def __init__(self, position: Point, destination: Point):
+    def __init__(self, position: Point, destination_type: PortalDestination, destination: Point = None):
         self._position = position
+        self._destination_type = destination_type
         self._destination = destination
+        if destination_type == PortalDestination.StaticPoint and not destination:
+            raise ValueError("Destination type was defined as static, yet no destination point defined")
 
     @property
     def position(self) -> Point:
         return self._position
+
+    @property
+    def destination_type(self) -> PortalDestination:
+        return self._destination_type
 
     @property
     def destination(self) -> Point:

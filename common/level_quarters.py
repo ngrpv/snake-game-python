@@ -1,6 +1,6 @@
 from common.level_empty import EmptyLevel
 from common.game_map import GameMap, Portal
-from common.enums import MapCellType
+from common.enums import MapCellType, PortalDestination
 from common.point import Point
 from common.snake import Snake
 
@@ -23,8 +23,9 @@ class QuartersMap(GameMap):
     """Game map which divided into 4 regions, reachable by edges trespassing only"""
 
     def _generate_portals(self) -> tuple:
-        p = Portal(Point(1, 1), Point(self.width - 2, self.height - 2))
-        return p,
+        static_portal = Portal(Point(1, 1), PortalDestination.StaticPoint, Point(self.width - 2, self.height - 2))
+        random_portal = Portal(Point(2, 2), PortalDestination.RandomPoint)
+        return static_portal, random_portal
 
     def _generate_map(self) -> None:
         self._half_width = self.width // 2

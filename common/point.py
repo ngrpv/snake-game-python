@@ -44,3 +44,6 @@ class Point:
             raise TypeError("Can perform modular division between Points only")
         both = self + other
         return Point(both.x % other.x, both.y % other.y)
+
+    def __hash__(self):
+        return (self.x, self.y).__hash__()

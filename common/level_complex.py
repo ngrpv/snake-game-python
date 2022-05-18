@@ -1,9 +1,9 @@
-from common.game_map import GameMap, MapCellType
-from common.level import GameLevel
-from common.snake import Snake
-from common.game_map import GameMap, Portal
 from common.enums import Direction
+from common.game_map import GameMap, Portal, MapCellType
+from common.level import GameLevel
 from common.point import Point
+from common.snake import Snake
+from common.enums import PortalDestination
 
 
 class ComplexLevel(GameLevel):
@@ -44,7 +44,7 @@ class ComplexMap(GameMap):
         return MapCellType.Empty
 
     def _generate_portals(self) -> tuple[Portal]:
-        p = Portal(Point(4, 4), Point(self.width // 2, self.height // 2))
+        p = Portal(Point(4, 4), PortalDestination.StaticPoint, Point(self.width // 2, self.height // 2))
         return p,
 
     def add_line(self, a: Point, b: Point):

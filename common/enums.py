@@ -17,3 +17,9 @@ class MapCellType(Enum):
     Snake = 3
     PortalIn = 4
     PortalOut = 5
+
+
+class PortalDestination(Enum):
+    StaticPoint = 0
+    RandomPoint = 1
+    NextLevel = 2
