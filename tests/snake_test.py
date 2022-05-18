@@ -5,16 +5,33 @@ from common.snake import Snake
 
 
 class TestSnake:
-    def test_snake_should_raise_if_init_snake_is_not_straight(self):
-        with pytest.raises(AttributeError):
-            Snake(Point(1, 1), Point(0, 0))
 
     @staticmethod
     def move_test(directions: list[Direction], snake_on_start: Snake,
                   snake_on_end: Snake):
         for d in directions:
             snake_on_start.move(d)
-        assert snake_on_end.__eq__(snake_on_start)
+        assert snake_on_end.points == snake_on_start.points
+
+    @staticmethod
+    def grow_test(start_snake: Snake, result_snake: Snake,
+                  movings: list[Direction]):
+        for m in movings:
+            start_snake.move(m)
+        start_snake.grow()
+        assert start_snake.points == result_snake.points
+
+    @staticmethod
+    def decrease_test(snake: Snake, expected_snake: Snake,
+                      moving: list[Direction]):
+        snake.decrease_to_one()
+        for m in moving:
+            snake.move(m)
+        assert snake.points == expected_snake.points
+
+    def test_snake_should_raise_if_init_snake_is_not_straight(self):
+        with pytest.raises(AttributeError):
+            Snake(Point(1, 1), Point(0, 0))
 
     def test_move_right(self):
         snake = Snake(Point(3, 0), Point(0, 0))
@@ -40,14 +57,6 @@ class TestSnake:
         directions = [Direction.Down, Direction.Right, Direction.Up,
                       Direction.Right, Direction.Down]
         TestSnake.move_test(directions, snake, expected)
-
-    @staticmethod
-    def grow_test(start_snake: Snake, result_snake: Snake,
-                  movings: list[Direction]):
-        for m in movings:
-            start_snake.move(m)
-        start_snake.grow()
-        assert start_snake.__eq__(result_snake)
 
     def test_grow_on_moving_right(self):
         snake = Snake(Point(3, 0), Point(0, 0))
@@ -105,3 +114,24 @@ class TestSnake:
         assert snake.get_points() == [
             Point(2, 2), Point(3, 0), Point(2, 0), Point(1, 0)
         ]
+
+    def test_snake_decrease_to_zero_on_moving_right(self):
+        snake = Snake(Point(3, 0), Point(0, 0))
+        expected = Snake(Point(4, 0), Point(3, 0))
+        TestSnake.decrease_test(snake, expected, [Direction.Right])
+
+    def test_snake_decrease_to_zero_complex_case(self):
+        snake = Snake(Point(3, 0), Point(0, 0))
+        expected = Snake(Point(5, 0), Point(3, 0))
+        expected.points = [
+            Point(5, 1), Point(4, 1), Point(4, 0), Point(3, 0)
+        ]
+        TestSnake.decrease_test(snake, expected,
+                                [Direction.Right,
+                                 Direction.Down,
+                                 Direction.Right])
+
+    def test_snake_growing_limited(self):
+        snake = Snake(Point(2, 0), Point(0, 0))
+        expected = Snake(Point(8, 0), Point(6, 0))
+        TestSnake.decrease_test(snake, expected, [Direction.Right] * 6)

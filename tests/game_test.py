@@ -12,7 +12,7 @@ from common.level import GameLevel, GameMap
 class TestGame(unittest.TestCase):
     def setUp(self):
         self.snake = Snake(Point(6, 0), Point(0, 0))
-        self.map = [EmptyLevel(10, 10, 10)]
+        self.map = [TestLevel(10, 10, 10)]
 
     def test_game_score_is_zero_after_init(self):
         game = Game(self.map)
@@ -54,7 +54,7 @@ class TestGame(unittest.TestCase):
             game.move(Direction.Up)
 
 
-class EmptyLevel(GameLevel):
+class TestLevel(GameLevel):
     def _create_snake(self, width: int, height: int) -> Snake:
         return Snake(Point(6, 0), Point(0, 0))
 
