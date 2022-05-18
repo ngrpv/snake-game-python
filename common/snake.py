@@ -12,7 +12,6 @@ class Snake:
         self.previous_tail_position = tail
         self._coordinate_limits = None
         self._grow_to_length = 0
-        self._is_growing = False
 
         if head.x == tail.x:
             for i in range(min(head.y, tail.y), max(head.y, tail.y)):
@@ -33,16 +32,12 @@ class Snake:
         self._grow_to_length = len(self.points)
         self.previous_tail_position = self.points[0]
         self.points = [self.head]
-        self._is_growing = True
 
     def move(self, direction: Direction) -> None:
         """Move the snake one block in the given direction"""
         self.teleport(self.head + direction.value)
-        if self._is_growing:
-            if self._grow_to_length > len(self.points):
-                self.grow()
-            else:
-                self._is_growing = False
+        if self._grow_to_length > len(self.points):
+            self.grow()
 
     def teleport(self, position: Point):
         """Make the snake by teleporting its head to given position"""
