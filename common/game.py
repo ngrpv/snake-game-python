@@ -54,8 +54,9 @@ class Game:
             y = randint(0, self._map.height - 1)
             candidate = Point(x, y)
             if self.get(x, y) == MapCellType.Empty:
-                if direction_free is Direction:
+                if isinstance(direction_free, Direction):
                     additional_point = candidate + direction_free.value
+                    additional_point = (self._map_size + additional_point) % self._map_size
                     if self.get(additional_point.x, additional_point.y) != MapCellType.Empty:
                         continue
                 is_point_generated = True
@@ -136,8 +137,7 @@ class Game:
 
         self._previous_direction = direction
         head = self._snake.head % self._map_size
-        if (self._snake.can_collide_with_itself(direction) or
-                self._map.get(head.x, head.y) == MapCellType.Obstacle):
+        if self._snake.can_collide_with_itself(direction) or self._map.get(head.x, head.y) == MapCellType.Obstacle:
             self._is_game_over = True
             return
 
@@ -157,8 +157,7 @@ class Game:
             self._snake.grow()
             self._score += 1
             self._score_on_level += 1
-            if self._score_on_level >= self._level.clear_score and \
-                    self._next_level_portal is None:
+            if self._score_on_level >= self._level.clear_score and self._next_level_portal is None:
                 position = self._get_random_empty_point()
                 self._next_level_portal = Portal(position, PortalDestination.NextLevel)
             self._next_food()
