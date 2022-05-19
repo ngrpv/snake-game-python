@@ -54,7 +54,7 @@ class Game:
             y = randint(0, self._map.height - 1)
             candidate = Point(x, y)
             if self.get(x, y) == MapCellType.Empty:
-                if direction_free:
+                if direction_free is Direction:
                     additional_point = candidate + direction_free.value
                     if self.get(additional_point.x, additional_point.y) != MapCellType.Empty:
                         continue
@@ -114,7 +114,7 @@ class Game:
             self._snake.teleport(portal.destination)
             return
         if portal.destination_type == PortalDestination.RandomPoint:
-            destination = self._get_random_empty_point()
+            destination = self._get_random_empty_point(self._previous_direction)
             self._snake.teleport(destination)
             return
         if portal.destination_type == PortalDestination.NextLevel:

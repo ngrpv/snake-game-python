@@ -10,10 +10,10 @@ if __name__ == "__main__":
     height = 30
 
     levels = [
-        EmptyLevel(width, height, 2),
-        WithBordersLevel(width, height, 4),
         QuartersLevel(width, height, 8),
         ComplexLevel(width, height, 10),
+        EmptyLevel(width, height, 2),
+        WithBordersLevel(width, height, 4),
     ]
 
     model = Game(levels)
