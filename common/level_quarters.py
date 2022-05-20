@@ -24,7 +24,7 @@ class QuartersMap(GameMap):
 
     def _generate_portals(self) -> tuple:
         static_portal = Portal(Point(1, 1), PortalDestination.StaticPoint, Point(self.width - 2, self.height - 2))
-        random_portal = Portal(Point(2, 2), PortalDestination.RandomPoint)
+        random_portal = Portal(Point(self.width//2 + 1, self.height//2 - 1), PortalDestination.RandomPoint)
         return static_portal, random_portal
 
     def _generate_map(self) -> None:
