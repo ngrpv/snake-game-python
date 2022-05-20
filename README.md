@@ -33,8 +33,8 @@ After you leave the last level this game has, it is considered you've won and th
 You can install it via `pip install -r requirements.txt`
     
 # Tests coverage 
- * game.py - 91%
- * snake.py - 100%
+ * game.py - 91%    // game model class
+ * snake.py - 100%  // snake auxiliary class for game model
 
 # Custom levels
 It is possible to create your own levels for this game.
